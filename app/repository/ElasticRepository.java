@@ -1,14 +1,17 @@
 package repository;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import env.ElasticConfiguration;
 import env.MarvelHeroesConfiguration;
 import models.PaginatedResults;
 import models.SearchedHero;
+import play.libs.Json;
 import play.libs.ws.WSClient;
 import utils.SearchedHeroSamples;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -28,22 +31,39 @@ public class ElasticRepository {
 
 
     public CompletionStage<PaginatedResults<SearchedHero>> searchHeroes(String input, int size, int page) {
-        return CompletableFuture.completedFuture(new PaginatedResults<>(3, 1, 1, Arrays.asList(SearchedHeroSamples.IronMan(), SearchedHeroSamples.MsMarvel(), SearchedHeroSamples.SpiderMan())));
-        // TODO
-        // return wsClient.url(elasticConfiguration.uri + "...")
-        //         .post(Json.parse("{ ... }"))
-        //         .thenApply(response -> {
-        //             return ...
-        //         });
+        int from = (page - 1) * size;
+        return wsClient.url(elasticConfiguration.uri + "/_search")
+                .post(Json.parse("{\"query\": {\"multi_match\" : {\"query\":  \""+input+"\", \n" +
+                        " \"fields\": [ \"name\",  \"identity.secretIdentities\", \"identity.aliases\", \"description\"] \n" +
+                        " }},\"from\": " + from + ",\"size\": " + size + "}"
+                        ))
+                .thenApply(response -> {
+                    JsonNode responseJson = Json.parse(response.getBody()).get("hits");
+                    int total = responseJson.get("total").get("value").asInt();
+                    JsonNode hitsJson = responseJson.get("hits");
+                    List<SearchedHero> results = new ArrayList<>();
+                    for (JsonNode hit : hitsJson) {
+                        results.add(SearchedHero.fromJson(hit.get("_source")));
+                    }
+                    int nbPages = 1 + (total / size);
+                    return new PaginatedResults<SearchedHero>(total, page,nbPages , results);
+                });
     }
 
     public CompletionStage<List<SearchedHero>> suggest(String input) {
-        return CompletableFuture.completedFuture(Arrays.asList(SearchedHeroSamples.IronMan(), SearchedHeroSamples.MsMarvel(), SearchedHeroSamples.SpiderMan()));
-        // TODO
-        // return wsClient.url(elasticConfiguration.uri + "...")
-        //         .post(Json.parse("{ ... }"))
-        //         .thenApply(response -> {
-        //             return ...
-        //         });
+        return wsClient.url(elasticConfiguration.uri + "/_search")
+                .post(Json.parse("{\"query\": {\"multi_match\" : {\"query\":  \""+input+"\", \n" +
+                        " \"fields\": [ \"name\",  \"identity.secretIdentities\", \"identity.aliases\", \"description\"] \n" +
+                        " }},\"size\": " + 5 + "}"
+                        ))
+                .thenApply(response -> {
+                    JsonNode responseJson = Json.parse(response.getBody()).get("hits");
+                    JsonNode hitsJson = responseJson.get("hits");
+                    List<SearchedHero> results = new ArrayList<>();
+                    for (JsonNode hit : hitsJson) {
+                        results.add(SearchedHero.fromJson(hit.get("_source")));
+                    }
+                    return results;
+                });
     }
 }
