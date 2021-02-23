@@ -7,15 +7,15 @@ import play.libs.Json;
 
 public class HeroSkills {
 
-    public final int intelligence;
-    public final int strength;
-    public final int speed;
-    public final int durability;
-    public final int combat;
-    public final int power;
+    public final float intelligence;
+    public final float strength;
+    public final float speed;
+    public final float durability;
+    public final float combat;
+    public final float power;
 
     @JsonCreator
-    public HeroSkills(@JsonProperty("intelligence") int intelligence, @JsonProperty("strength") int strength, @JsonProperty("speed") int speed, @JsonProperty("durability") int durability, @JsonProperty("combat") int combat, @JsonProperty("power") int power) {
+    public HeroSkills(@JsonProperty("intelligence") float intelligence, @JsonProperty("strength") float strength, @JsonProperty("speed") float speed, @JsonProperty("durability") float durability, @JsonProperty("combat") float combat, @JsonProperty("power") float power) {
         this.intelligence = intelligence;
         this.strength = strength;
         this.speed = speed;
