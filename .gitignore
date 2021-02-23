@@ -9,3 +9,8 @@ target/
 scripts/node_modules/
 scripts/.env
 logs
+.vscode/
+.metals/
+.bloop/
+metals.sbt
+pom.xml

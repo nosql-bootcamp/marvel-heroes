@@ -23,7 +23,7 @@ public class SearchedHero {
     public final String gender;
 
     @JsonCreator
-    public SearchedHero(@JsonProperty("id") String id, @JsonProperty("thumbnail") String imageUrl, @JsonProperty("name") String name, @JsonProperty("universe") String universe, @JsonProperty("gender") String gender) {
+    public SearchedHero(@JsonProperty("id") String id, @JsonProperty("imageUrl") String imageUrl, @JsonProperty("name") String name, @JsonProperty("universe") String universe, @JsonProperty("gender") String gender) {
         this.id = id;
         this.imageUrl = imageUrl;
         this.name = name;
