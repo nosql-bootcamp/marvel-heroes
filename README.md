@@ -28,12 +28,12 @@ Votre mission est la suivante : compléter le code manquant afin de faire foncti
 
 Les éléments à compléter se trouvent dans les fichiers suivants : 
 * Scripts d'import des données
-  * `scripts/import-elasticsearch.js`
-  * `scripts/import-mongo.js`
+  * [scripts/import-elasticsearch.js](scripts/import-elasticsearch.js)
+  * [scripts/import-mongo.js](scripts/import-mongo.js)
 * Application
-  * `app/repository/ElasticRepository.java`
-  * `app/repository/MongoDBRepository.java`
-  * `app/repository/RedisRepository.java`
+  * [app/repository/ElasticRepository.java](app/repository/ElasticRepository.java)
+  * [app/repository/MongoDBRepository.java](app/repository/MongoDBRepository.java)
+  * [app/repository/RedisRepository.java](app/repository/RedisRepository.java)
 
 
 ## Pré-requis
@@ -51,7 +51,7 @@ Languages et tooling :
 
 Environnement de développement conseillé :
 * Intellij Idea (pour la partie Play/Java)
-  * + plugin SBT : https://plugins.jetbrains.com/plugin/5007-sbt
+  * + [plugin SBT](https://plugins.jetbrains.com/plugin/5007-sbt)
 * VSCode (pour la partie Node)
 
 ## Lancer l'application
@@ -71,7 +71,7 @@ $ sbt
 
 ## Dataset
 
-Les données sont disponibles dans le fichier `scripts/all-heroes.csv` et proviennent de plusieurs sources de données : 
+Les données sont disponibles dans le fichier [scripts/all-heroes.csv](scripts/all-heroes.csv) et proviennent de plusieurs sources de données : 
 * [API Marvel](https://developer.marvel.com/)
 * [SuperheroDB](https://www.superherodb.com/)
 
@@ -180,15 +180,15 @@ Voici un exemple de document stocké dans MongoDB, obtenu grâce à la commande 
 
 ## Liens utiles
 
-* Suggestion avec Elasticsearch : https://www.elastic.co/guide/en/elasticsearch/reference/7.5/search-suggesters.html#completion-suggester
+* [Suggestion avec Elasticsearch](https://www.elastic.co/guide/en/elasticsearch/reference/7.5/search-suggesters.html#completion-suggester)
 * Query Boosting (Elasticsearch) : 
-  * https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-query-string-query.html#_boosting
-  * https://www.elastic.co/guide/en/elasticsearch/reference/current/mapping-boost.html
-* Aggrégations avec MongoDB : https://docs.mongodb.com/manual/meta/aggregation-quick-reference/
+  * [https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-query-string-query.html#_boosting](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-query-string-query.html#_boosting)
+  * [https://www.elastic.co/guide/en/elasticsearch/reference/current/mapping-boost.html](https://www.elastic.co/guide/en/elasticsearch/reference/current/mapping-boost.html)
+* [Aggrégations avec MongoDB](https://docs.mongodb.com/manual/meta/aggregation-quick-reference/)
 
 Drivers Java utilisés : 
-* Driver Redis *Lettuce* : https://lettuce.io/
-* Driver MongoDB réactif : https://mongodb.github.io/mongo-java-driver-reactivestreams/
+* [Driver Redis *Lettuce*](https://lettuce.io/)
+* [Driver MongoDB réactif](https://mongodb.github.io/mongo-java-driver-reactivestreams/)
 
 
 ## Pour rendre le travail
