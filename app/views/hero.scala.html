@@ -1,0 +1,219 @@
+@import scala.compat.java8.OptionConverters._
+@(request: Http.Request, hero: Hero)
+
+
+@mainClass = @{
+    if (hero.isMarvel) {
+        if (hero.imageUrl == hero.backgroundImageUrl) {
+            "hero-page hero-dc"
+        } else {
+            "hero-page"
+        }
+    } else {
+        "hero-page hero-dc"
+    }
+}
+
+@moreScripts = {
+    <script>
+        const suggestUrl = '@routes.HomeController.suggestHeroes("X_X_X_X_X").url';
+        const redirectUrl = '@routes.HomeController.hero("X_X_X_X_X").url';
+        function mountSuggest() {
+            autocomplete(document.getElementById('switch'), { hint: false }, [
+                {
+                    source: function(query, callback) {
+                        fetch(suggestUrl.replace("X_X_X_X_X", query))
+                                .then(res => res.json())
+                    .then(results => {
+                            callback(results)
+                    })
+                    },
+                    displayKey: function(suggestion) { return suggestion.name },
+                    templates: {
+                        suggestion: function(feature) {
+                            return `<div class="suggest-item"><img src="${feature.imageUrl}"><span>${feature.name}</span></div>`;
+                        },
+                        empty: '<div class="aa-suggestion aa-suggestion-empty">Aucune proposition</div>'
+                    },
+                    debounce: 250
+                }
+            ]).on('autocomplete:selected', function(event, suggestion, dataset, context) {
+                window.location.href = redirectUrl.replace("X_X_X_X_X", suggestion.id)
+            })
+        }
+    </script>
+    <script src="https://cdn.jsdelivr.net/autocomplete.js/0/autocomplete.min.js" onload="mountSuggest()"></script>
+}
+
+@main(hero.name, request, background = Option(hero.backgroundImageUrl), mainClass=Option(mainClass), moreScripts = moreScripts) {
+    <div class="switch-container">
+        <input id="switch" type="text" class="switch" placeholder="Hero name"><img class="search-icon" src="@routes.Assets.versioned("images/search-icon.svg")">
+    </div>
+    <div class="hero">
+        <div class="sidebar">
+            <div class="image-container">
+                <img src="@hero.imageUrl" onerror="this.onerror=null;this.src='https://community.algolia.com/marvel-search/img/hit-default.jpg';" />
+            </div>
+            <div class="stats">
+                <div class="stat">
+                    <label>Intelligence</label><progress value="@hero.skills.intelligence" max="100"></progress><label class="stat-value">@hero.skills.intelligence</label>
+                </div>
+                <div class="stat">
+                    <label>Strength</label><progress value="@hero.skills.strength" max="100"></progress><label class="stat-value">@hero.skills.strength</label>
+                </div>
+                <div class="stat">
+                    <label>Speed</label><progress value= "@hero.skills.speed" max="100"></progress><label class="stat-value">@hero.skills.speed</label>
+                </div>
+                <div class="stat">
+                    <label>Durability</label><progress value= "@hero.skills.durability" max="100"></progress><label class="stat-value">@hero.skills.durability</label>
+                </div>
+                <div class="stat">
+                    <label>Power</label><progress value= "@hero.skills.power" max="100"></progress><label class="stat-value">@hero.skills.power</label>
+                </div>
+                <div class="stat">
+                    <label>Combat</label><progress value= "@hero.skills.combat" max="100"></progress><label class="stat-value">@hero.skills.combat</label>
+                </div>
+            </div>
+            @for(externalLink <- hero.externalLink.asScala) {
+                <div class="link">
+                    <a href="@externalLink" target="_blank" rel="noopener noreferrer" title="See website">See website</a>
+                </div>
+            }
+        </div>
+        <div class="detail">
+                <div class="description box sheet">
+                    <h3 class="text top-left">Description</h3>
+                    @for(description <- hero.description.asScala) {
+                        <p>@description</p>
+                    }
+                    <label>Created by : @hero.creators.mkString(", ")</label>
+                </div>
+            <div class="infos">
+                <div>
+                    <div class="identity box sheet">
+                        <h3 class="text top-left">Identity</h3>
+                        <div class="content-list">
+                            @if(hero.identity.secretIdentities.size() > 0) {
+                                <div class="content-list-entry">
+                                    <label>Secret identities: </label><label class="value">@hero.identity.secretIdentities.mkString(", ")</label>
+                                </div>
+                            }
+                            @for(birthPlace <- hero.identity.birthPlace.asScala) {
+                                <div class="content-list-entry">
+                                    <label>Birth place: </label>
+                                    <label class="value">@birthPlace</label>
+                                </div>
+                            }
+                            @for(occupation <- hero.identity.occupation.asScala) {
+                                <div class="content-list-entry">
+                                    <label>Occupation: </label>
+                                    <label class="value">@occupation</label>
+                                </div>
+                            }
+                            @if(hero.identity.aliases.size() > 0) {
+                                <div class="content-list-entry aliases">
+                                    <label>Aliases: </label>
+                                    <label class="value">
+                                        @for(alias <- hero.identity.aliases) {
+                                            <span>@alias</span>
+                                        }
+                                    </label>
+                                </div>
+                            }
+                            @for(alignment <- hero.identity.alignment.asScala) {
+                                <div class="content-list-entry">
+                                    <label>Alignment: </label>
+                                    <label class="value">@alignment</label>
+                                </div>
+                            }
+                            @for(firstAppearance <- hero.identity.firstAppearance.asScala) {
+                                <div class="content-list-entry">
+                                    <label>First appearance: </label>
+                                    <label class="value">@firstAppearance</label>
+                                </div>
+                            }
+                            @for(yearAppearance <- hero.identity.yearAppearance.asScala) {
+                                <div class="content-list-entry">
+                                    <label>Year appearance: </label>
+                                    <label class="value">@yearAppearance</label>
+                                </div>
+                            }
+                            <div class="content-list-entry">
+                                <label>Universe: </label><label class="value">@hero.identity.universe</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div class="appearance box sheet">
+                        <h3 class="text top-left">Appearance</h3>
+                        <div class="content-list">
+                            @for(gender <- hero.appearance.gender.asScala) {
+                                <div class="content-list-entry">
+                                    <label>Gender: </label>
+                                    <label class="value">@gender</label>
+                                </div>
+                            }
+                            @defining(Seq(hero.appearance.race.asScala, hero.appearance.`type`.asScala).filter(elem => elem.isDefined).map(elem => elem.get).filter(elem => elem.nonEmpty)) { typeRace =>
+                              @if(typeRace.nonEmpty) {
+                                  <div class="content-list-entry">
+                                      <label>Type/Race: </label>
+                                      <label class="value">@typeRace.mkString(" / ")</label>
+                                  </div>
+                              }
+                            }
+                            @for(height <- hero.appearance.height.asScala) {
+                                <div class="content-list-entry">
+                                    <label>Height: </label>
+                                    <label class="value">@height cm</label>
+                                </div>
+                            }
+                            @for(weight <- hero.appearance.weight.asScala) {
+                                <div class="content-list-entry">
+                                    <label>Weight: </label>
+                                    <label class="value">@weight kg</label>
+                                </div>
+                            }
+                            @for(eyeColor <- hero.appearance.eyeColor.asScala) {
+                                <div class="content-list-entry">
+                                    <label>Eye color: </label>
+                                    <label class="value">@eyeColor</label>
+                                </div>
+                            }
+                            @for(hairColor <- hero.appearance.hairColor.asScala) {
+                                <div class="content-list-entry">
+                                    <label>Hair color: </label>
+                                    <label class="value">@hairColor</label>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                    <div class="relationships box sheet">
+                        <h3 class="text top-left">Partners</h3>
+                        <ul>
+                        @for(partner <- hero.partners) {
+                            <li>@partner</li>
+                        }
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="relationships box sheet">
+                <h3 class="text top-left">Teams</h3>
+                <ul>
+                @for(team <- hero.teams) {
+                    <li>@team</li>
+                }
+                </ul>
+            </div>
+            <div class="powers box sheet">
+                <h3 class="text top-left">Powers</h3>
+                <ul>
+                @for(power<- hero.powers) {
+                    <li>@power</li>
+                }
+                </ul>
+            </div>
+        </div>
+    </div>
+}

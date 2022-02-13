@@ -1,0 +1,20 @@
+
+@font-face{
+    font-family:'Title';
+    src:url("../fonts/PalookaBold.otf");
+    font-weight:bold;
+    font-style:normal
+}
+@font-face{
+    font-family:'TitleBold';
+    src:url("../fonts/PalookaRegular.otf");
+    font-weight:normal;
+    font-style:normal
+}
+
+$comics-typo: 'Bangers', cursive;
+$comics-typo2: 'Title', Helvetica, sans-serif;
+
+$header-color : #C60506;
+$card-border-color: #888;
+$subtitle-color: #F11E22

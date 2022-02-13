@@ -1,0 +1,21 @@
+@import "common/variables";
+@import "components/header";
+@import "components/content";
+@import "components/box";
+@import "components/poster";
+@import "components/sidebar";
+@import "layouts/home";
+@import "layouts/comics";
+@import "layouts/hero";
+@import "layouts/stats";
+
+* {
+  box-sizing: border-box;
+  letter-spacing: 1px;
+}
+
+body {
+  font-family: $comics-typo;
+  margin: 0;
+  height: 100vh;
+}

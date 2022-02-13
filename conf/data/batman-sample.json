@@ -1,0 +1,84 @@
+{
+  "id": "10-639",
+  "name": "Batman",
+  "description": "Batman is a fictional superhero appearing in American comic books published by DC Comics. The character was created by artist Bob Kane and writer Bill Finger, and first appeared in Detective Comics #27 in 1939. Originally named the \"Bat-Man,\" the character is also referred to by such epithets as the Caped Crusader, the Dark Knight, and the World's Greatest Detective.",
+  "imageUrl": "https://www.superherodb.com/pictures2/portraits/10/100/639.jpg",
+  "backgroundImageUrl": "https://img2.wikia.nocookie.net/__cb20150601002504/marvel_dc/images/5/50/Wiki-background",
+  "externalLink": "https://www.superherodb.com/batman/10-639/",
+  "identity": {
+    "secretIdentities": ["Bruce Wayne"],
+    "birthPlace": "Crest Hill (Bristol Township, Gotham City)",
+    "occupation": "Businessman",
+    "aliases": [
+      "Insider",
+      "Matches Malone"
+    ],
+    "alignment": "good",
+    "firstAppearance": "Detective Comics #27",
+    "yearAppearance": 1939,
+    "universe": "DC Comics"
+  },
+  "appearance": {
+    "gender": "Male",
+    "race": "Human",
+    "height": 188,
+    "weight": 95,
+    "eyeColor": "Blue",
+    "hairColor": "Black"
+  },
+  "teams": [
+    "Justice League (Leader)",
+    "Batman Family (Leader)",
+    "Outsiders (Leader)",
+    "Justice League Antarctica (Leader)",
+    "Justice League of America (Leader)",
+    "Black Lantern Corps",
+    "Justice League Elite",
+    "Superfriends",
+    "All-Star Squadron",
+    "Formerly: Sinestro Corps",
+    "Black Lantern Corps",
+    "The Outsiders"
+  ],
+  "powers": [
+    "Agility",
+    "Durability",
+    "Stealth",
+    "Underwater breathing",
+    "Marksmanship",
+    "Weapons Master",
+    "Intelligence",
+    "Super Strength",
+    "Stamina",
+    "Super Speed",
+    "Weapon-based Powers",
+    "Peak Human Condition",
+    "Reflexes",
+    "Gliding",
+    "Power Suit",
+    "Vision - Night",
+    "Vision - Infrared"
+  ],
+  "partners": [
+    "Robin",
+    "Nightwing",
+    "Alfred Pennyworth",
+    "James Gordon",
+    "Catwoman",
+    "Batgirl",
+    "Superman",
+    "Wonder Woman"
+  ],
+  "skills": {
+    "intelligence": 100,
+    "strength": 20,
+    "speed": 30,
+    "durability": 50,
+    "power": 50,
+    "combat": 100
+  },
+  "creators": [
+    "Bob Kane",
+    "Bill Finger"
+  ]
+}

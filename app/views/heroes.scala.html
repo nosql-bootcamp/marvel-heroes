@@ -1,0 +1,133 @@
+@(request: Http.Request, heroes: PaginatedResults[SearchedHero], tops: List[TopStatItem], lasts: List[StatItem])
+
+@moreScripts = {
+    <script>
+        const searchHeroesUrl = '@routes.HomeController.searchHeroes("X_X_X_X", -99).url'.replace('&amp;', '&');
+        const detailUrl = '@routes.HomeController.hero("X_X_X_X").url';
+        var input = "";
+        var currentPage = @heroes.page;
+
+        function search(query, page) {
+            fetch(searchHeroesUrl.replace("X_X_X_X", query).replace("-99", page))
+                        .then(r => r.json())
+                        .then(response => {
+                        currentPage = response.page;
+                        [...document.getElementsByClassName("search-result")].forEach(elem => elem.remove());
+                        const table = document.getElementById("search-results")
+                        response.results.forEach(hero => {
+                            const row = document.createElement("tr");
+                            row.setAttribute("class", "search-result");
+                            row.innerHTML = `
+                                <td class="avatar"><img src="${hero.imageUrl}" /></td>
+                                <td class="hero-name">${hero.name}</td>
+                                <td>${hero.gender}</td>
+                                <td>${hero.universe}</td>
+                                <td class="detail"><a href="${detailUrl.replace("X_X_X_X", hero.id)}" title="Détails"> &raquo; </a></td>
+                            `;
+                            table.appendChild(row);
+                        })
+                        if (response.total > 0) {
+                            document.getElementById("search-nb-results").innerText = `${response.total} results`;
+                        } else {
+                            document.getElementById("search-nb-results").innerText = `no results`;
+                        }
+                        document.getElementById("current-page").innerText = response.page;
+                        document.getElementById("total-page").innerText = response.totalPage;
+                        if (response.page > 1) {
+                            document.getElementById("previous-page").classList.remove("hide");
+                        } else {
+                            document.getElementById("previous-page").classList.add("hide");
+                        }
+                        if (response.page === response.totalPage) {
+                            document.getElementById("next-page").classList.add("hide");
+                        } else {
+                            document.getElementById("next-page").classList.remove("hide");
+                        }
+                })
+        }
+
+
+        document.getElementById('search-input').addEventListener('input', debounce(function(e) {
+                input = this.value;
+                search(this.value, "1");
+            }, 300));
+        
+        function nextPage() {
+            search(input, parseInt(currentPage) + 1)
+        }
+
+        function previousPage() {
+            search(input, parseInt(currentPage) - 1)
+        }
+    </script>
+}
+
+@main("Heroes", request, moreScripts = moreScripts) {
+    <div class="heroes">
+        <div class="sidebar hero">
+            <div class="tops box card">
+                <h4 class="text top-left">#Top 5</h4>
+                <ul class="stat-items">
+                @for(top <- tops) {
+                    <li>
+                        <a href="@routes.HomeController.hero(top.statItem.slug)" title="@top.statItem.name" class="stat-item">
+                            <img src="@top.statItem.imageUrl" class="stat-item-avatar"> @top.statItem.name (@top.hits)
+
+                        </a>
+                    </li>
+                }
+                </ul>
+            </div>
+            <div class="lasts box card">
+                <h4 class="text top-left">#Bot 5</h4>
+                <ul class="stat-items">
+                    @for(last <- lasts) {
+                        <li>
+                            <a href="@routes.HomeController.hero(last.slug)" title="@last.name" class="stat-item">
+                                <img src="@last.imageUrl" class="stat-item-avatar"> @last.name
+
+                            </a>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
+        <div class="heroes-list">
+            <div class="search">
+                <label id="search-nb-results">@{heroes.total} results</label>
+                <input id="search-input" type="text" class="search box content-box" placeholder="Something about a hero" />
+            </div>
+            <div class="results">
+                <div class="box content-box results-table">
+                    <table class="" id="search-results">
+                        <tr class="table-header">
+                            <th></th>
+                            <th>Name</th>
+                            <th>Gender</th>
+                            <th>Universe</th>
+                            <th></th>
+                        </tr>
+                        @for(hero <- heroes.results) {
+                            <tr class="search-result">
+                                <td class="avatar"><img src="@hero.imageUrl" /></td>
+                                <td class="hero-name">@hero.name</td>
+                                <td>@hero.gender</td>
+                                <td>@hero.universe</td>
+                                <td class="detail"><a href="@routes.HomeController.hero(hero.id).url" title="Détails"> &raquo; </a></td>
+                            </tr>
+                        }
+                    </table>
+                </div>
+                <div class="page-links">
+                    <a id="previous-page" class="page-nav previous hide" href="#" title="Previous" onclick="previousPage()">&lt;</a>
+                    <span class="page">
+                        <span id="current-page">@heroes.page</span>
+                        <span class="page-separator"> / </span>
+                        <span id="total-page">@heroes.totalPage</span>
+                    </span>
+                    <a id="next-page" class="page-nav next" href="#" title="Next" onclick="nextPage()">&gt;</a>
+                </div>
+            </div>
+        </div>
+    </div>
+}

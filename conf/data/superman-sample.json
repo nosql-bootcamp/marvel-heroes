@@ -1,0 +1,95 @@
+{
+  "id": "10-791",
+  "name": "Superman",
+  "description": "Superman is a fictional superhero. The character was created by writer Jerry Siegel and artist Joe Shuster, and first appeared in Action Comics #1, a comic book published on April 18, 1938. The character regularly appears in comic books published by DC Comics, and has been adapted to a number of radio serials, movies, and television shows.",
+  "imageUrl": "https://www.superherodb.com/pictures2/portraits/10/100/791.jpg",
+  "backgroundImageUrl": "https://img2.wikia.nocookie.net/__cb20150601002504/marvel_dc/images/5/50/Wiki-background",
+  "externalLink": "https://www.superherodb.com/superman/10-791/",
+  "identity": {
+    "secretIdentities": ["Clark Joseph Kent (Kal-El)"],
+    "birthPlace": "Krypton",
+    "occupation": "Reporter for the Daily Planet and novelist",
+    "aliases": [
+      "Clark Kent",
+      "The Man of Steel",
+      "the Man of Tomorrow",
+      "the Last Son of Krypton",
+      "Big Blue",
+      "the Metropolis Marvel",
+      "the Action Ace"
+    ],
+    "alignment": "good",
+    "firstAppearance": "ACTION COMICS #1",
+    "yearAppearance": 1986,
+    "universe": "DC Comics"
+  },
+  "appearance": {
+    "gender": "Male",
+    "race": "Kryptonian",
+    "height": 191,
+    "weight": 101,
+    "eyeColor": "Blue",
+    "hairColor": "Black"
+  },
+  "teams": [
+    "Justice League Elite (Leader)",
+    "Superfriends (Leader)",
+    "Justice Legion Alpha",
+    "Time Masters",
+    "Formerly: Black Lantern Corps",
+    "Legion of Super-Heroes",
+    "Justice League",
+    "Justice League of America",
+    "Justice League Antarctica"
+  ],
+  "powers": [
+    "Agility",
+    "Accelerated Healing",
+    "Cold Resistance",
+    "Durability",
+    "Energy Absorption",
+    "Flight",
+    "Marksmanship",
+    "Longevity",
+    "Intelligence",
+    "Super Strength",
+    "Stamina",
+    "Super Speed",
+    "Enhanced Senses",
+    "Energy Beams",
+    "Jump",
+    "Enhanced Memory",
+    "Reflexes",
+    "Invulnerability",
+    "Fire Resistance",
+    "Enhanced Hearing",
+    "Hypnokinesis",
+    "Enhanced Sight",
+    "Heat Resistance",
+    "Enhanced Smell",
+    "Vision - Telescopic",
+    "Vision - Microscopic",
+    "Super Breath",
+    "Vision - Heat",
+    "Vision - X-Ray"
+  ],
+  "partners": [
+    "Supergirl",
+    "Superboy",
+    "Superdog (Krypto)",
+    "Batman",
+    "Wonder Woman"
+  ],
+  "skills": {
+    "intelligence": 100,
+    "strength": 100,
+    "speed": 100,
+    "durability": 100,
+    "power": 100,
+    "combat": 85
+  },
+  "creators": [
+    "Jerry Siegel",
+    "Joe Shuster"
+  ]
+}

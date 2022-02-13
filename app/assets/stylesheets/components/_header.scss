@@ -1,0 +1,30 @@
+header {
+  padding: 0 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #ffffff;
+  background-color: $header-color;
+  height: 60px;
+  .links {
+    a {
+      color: #ffffff;
+      font-weight: bold;
+      text-decoration: none;
+      font-size: 21px;
+      &:hover {
+        text-decoration: underline;
+      }
+      &.active {
+        border-bottom: 3px solid #fff;
+      }
+    }
+  }
+  .separator {
+    font-size: 21px;
+    &::before {
+      content: '|';
+      margin: 0 7px;
+    }
+  }
+}

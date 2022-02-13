@@ -1,0 +1,11 @@
+.idea/
+.DS_Store
+target/
+/.idea_modules
+/.classpath
+/.project
+/.settings
+/RUNNING_PID
+scripts/node_modules/
+scripts/.env
+logs

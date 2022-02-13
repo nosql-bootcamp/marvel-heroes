@@ -1,0 +1,75 @@
+{
+  "id": "1009610",
+  "name": "Spider-Man",
+  "description": "Bitten by a radioactive spider, high school student Peter Parker gained the speed, strength and powers of a spider. Adopting the name Spider-Man, Peter hoped to start a career using his new abilities. Taught that with great power comes great responsibility, Spidey has vowed to use his powers to help people.",
+  "imageUrl": "http://i.annihil.us/u/prod/marvel/i/mg/3/50/526548a343e4b.jpg",
+  "backgroundImageUrl": "http://i.annihil.us/u/prod/marvel/i/mg/6/90/537ba2184e75f.gif",
+  "externalLink": "http://marvel.com/universe/Spider-Man_(Peter_Parker)",
+  "identity": {
+    "secretIdentities": ["Peter Benjamin Parker"],
+    "birthPlace": "Queens (New York City, New York)",
+    "occupation": "Freelance photographer, teacher",
+    "aliases": [
+      "Ben Reilly",
+      "Dusk",
+      "Hornet",
+      "Peter Parker",
+      "Prodigy",
+      "Ricochet",
+      "Scarlet Spider",
+      "Spider-Man",
+      "Spiderman",
+      "Spidey",
+      "Tiger",
+      "Wallcrawler",
+      "Web-slinger",
+      "Webhead"
+    ],
+    "alignment": "good",
+    "firstAppearance": "Amazing Fantasy #15",
+    "yearAppearance": 1962,
+    "universe": "Marvel"
+  },
+  "appearance": {
+    "gender": "Male",
+    "race": "Human",
+    "type": "Mutate",
+    "height": 157,
+    "weight": 56,
+    "eyeColor": "Brown",
+    "hairColor": "Black"
+  },
+  "teams": [
+    "Avengers",
+    "Defenders",
+    "Fantastic Four",
+    "Future Foundation",
+    "Heroes for Hire",
+    "The New Avengers",
+    "X-Mansion"
+  ],
+  "powers": [
+    "Agility",
+    "Genius",
+    "Genius-level intellect",
+    "Precognitive",
+    "Precognitive spider-sense",
+    "Speed",
+    "Spider-sense",
+    "Superhuman strength"
+  ],
+  "partners": [
+  ],
+  "skills": {
+    "intelligence": 88,
+    "strength": 55,
+    "speed": 60,
+    "durability": 74,
+    "power": 58,
+    "combat": 85
+  },
+  "creators": [
+    "Stan Lee",
+    "Steve Ditko"
+  ]
+}

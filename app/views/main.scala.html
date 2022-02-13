@@ -1,0 +1,54 @@
+@*
+ * This template is called from the `index` template. This template
+ * handles the rendering of the page header and body tags. It takes
+ * two arguments, a `String` for the title of the page and an `Html`
+ * object to insert into the body of the page.
+ *@
+@(title: String, request: Http.RequestHeader, background: Option[String] = None, mainClass: Option[String] = None, moreHeader: Html = Html(""), moreScripts: Html = Html(""))(content: Html)
+
+@activeLink(currentPath:String) = @{
+    if (!currentPath.equals(routes.HomeController.heroes().url)) {
+        if(request.path.startsWith(currentPath)) " active" else ""
+    } else {
+        if(request.path.equals(currentPath)) " active" else ""
+    }
+}
+
+@link(url: String, title: String) = {
+    <a class="@activeLink(url)" href="@url" title="@title">@title</a>
+}
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        @* Here's where we render the page title `String`. *@
+        <title>@title</title>
+        <link rel="shortcut icon" type="image/ico" href="@routes.Assets.versioned("images/favicon.ico")">
+        <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Bangers" />
+        <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Comfortaa" />
+        <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Marvel:400,700" />
+        <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/main.css")">
+        @moreHeader
+    </head>
+    <body>
+        @* And here's where we render the `Html` object containing
+         * the page content. *@
+        <header>
+            <div class="links">
+                @link(routes.HomeController.heroes().url, "Heroes")
+                <span class="separator"></span>
+                @link(routes.HomeController.stats().url, "Stats")
+            </div>
+        </header>
+        @if(background.isDefined) {
+            <main style="background-image: url('@background.get')" class="@mainClass.getOrElse("")">
+        } else {
+            <main class="@mainClass.getOrElse("")">
+        }
+            <h1>@title</h1>
+        @content
+        </main>
+        <script src="@routes.Assets.versioned("javascripts/main.js")" type="text/javascript"></script>
+        @moreScripts
+    </body>
+</html>

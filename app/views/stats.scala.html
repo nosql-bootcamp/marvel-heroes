@@ -1,0 +1,182 @@
+@import play.api.libs.json.{JsArray, Json}
+@(request: Http.Request, heroesByUniverse: List[ItemCount], yearAndUniverseStats: List[YearAndUniverseStat], topPowers: List[ItemCount])
+
+
+@getColor(universe: String)= @{
+    universe.toLowerCase match {
+        case "marvel" => "#C60506"
+        case "dc" => "#0080FF"
+        case _ => s"rgb(${Math.floor(Math.random() * 255).toInt}, ${Math.floor(Math.random() * 255).toInt}, ${Math.floor(Math.random() * 255).toInt})"
+    }
+}
+
+@moreScripts = {
+
+
+
+
+    <script>
+
+            function getColor(universe) {
+                switch (universe.toLowerCase()) {
+                    case "marvel": return "#C60506"
+                    case "dc": return "#0080FF"
+                }
+                return "yellow"
+            }
+
+            var yearUniverseData = @Html(
+                        Json.stringify(
+                                JsArray(yearAndUniverseStats
+                                    .map(year =>
+                                        Json.obj(
+                                            "year" -> year.yearAppearance,
+                                            "byUniverse" -> year.byUniverse.map(universeCount =>
+                                                    Json.obj(
+                                                        "universe" -> universeCount.item,
+                                                        "count" -> universeCount.count
+                                                    )
+
+                                            )
+                                        )
+                                     )
+                                    )
+                        )
+             )
+
+            function heroesByUniversePieCharts() {
+
+                var ctx = document.getElementById('byUniverseChart');
+                var chart = new Chart(ctx, {
+                    // The type of chart we want to create
+                    type: 'doughnut',
+
+                    // The data for our dataset
+                    data: {
+                        labels: [@Html(heroesByUniverse.map(elem => s""""${elem.item}"""").mkString(", "))],
+                        datasets: [{
+                            label: 'Heroes by universe',
+                            data: [@Html(heroesByUniverse.map(elem => elem.count).mkString(", "))]
+                        }]
+                    },
+
+                    // Configuration options go here
+                    options: {
+                        legend: { position: 'left'},
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        elements: {
+                            arc: {
+                                backgroundColor: [@Html(heroesByUniverse.map(elem => s"'${getColor(elem.item)}'").mkString(", "))]
+                            }
+                        }
+                    }
+                });
+
+            }
+
+            function topPowersPieCharts() {
+
+                var ctx = document.getElementById('topPowersChart');
+                var chart = new Chart(ctx, {
+                    // The type of chart we want to create
+                    type: 'doughnut',
+
+                    // The data for our dataset
+                    data: {
+                        labels: [@Html(topPowers.map(elem => s""""${elem.item}"""").mkString(", "))],
+                        datasets: [{
+                            label: 'Top 5 Powers',
+                            data: [@Html(topPowers.map(elem => elem.count).mkString(", "))]
+                        }]
+                    },
+
+                    // Configuration options go here
+                    options: {
+                        legend: { position: 'left'},
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        elements: {
+                            arc: {
+                                backgroundColor: [@Html(topPowers.map(elem => s"'${getColor(elem.item)}'").mkString(", "))]
+                            }
+                        }
+                    }
+                });
+
+            }
+
+            function yearAndUniverseBarCharts() {
+                var ctx = document.getElementById('appearanceYearChart');
+                var universes = [@Html(yearAndUniverseStats.flatMap(elem => elem.byUniverse.map(item => item.item)).map(item => s"'${item}'").toSet.mkString(", "))];
+                var barChartData = {
+                    labels: [@Html(yearAndUniverseStats.map(elem => s"'${elem.yearAppearance}'").mkString(", "))],
+                    datasets: universes.map(universe => {
+                        return {
+                            label: universe,
+                            data: yearUniverseData.map(y => (y.byUniverse.find(elem => elem.universe === universe) || {count: 0}).count),
+                            backgroundColor: getColor(universe)
+                        }
+                    })
+                };
+
+                new Chart(ctx, {
+                    type: 'bar',
+                    data: barChartData,
+                    options: {
+                        title: {
+                            display: true,
+                            text: ''
+                        },
+                        tooltips: {
+                            mode: 'index',
+                            intersect: false
+                        },
+                        responsive: true,
+                        scales: {
+                            xAxes: [{
+                                stacked: true,
+                            }],
+                            yAxes: [{
+                                stacked: true
+                            }]
+                        }
+                    }
+                });
+            }
+
+            function initCharts() {
+                heroesByUniversePieCharts();
+                topPowersPieCharts();
+                yearAndUniverseBarCharts();
+            }
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.bundle.min.js" integrity="sha256-TQq84xX6vkwR0Qs1qH5ADkP+MvH0W+9E7TdHJsoIQiM=" crossorigin="anonymous" onload="initCharts()"></script>
+}
+@main("Stats", request, mainClass=Option("stats"), moreScripts = moreScripts) {
+
+    <div class="stats-container">
+        <div class="stats-pie-container">
+            <div class="stat-universe box content-box">
+                <h4 class="text top-left">By Universe</h4>
+                <div class="chart-container piechart">
+                    <canvas id="byUniverseChart"></canvas>
+                </div>
+            </div>
+            <div class="stat-universe box content-box">
+                <h4 class="text top-left">Top 5 Powers</h4>
+                <div class="chart-container piechart">
+                    <canvas id="topPowersChart"></canvas>
+                </div>
+            </div>
+
+        </div>
+        <div class="stat-year-appearance box content-box">
+            <h4 class="text top-left">Appearance Year</h4>
+            <div class="chart-container barchart">
+                <canvas id="appearanceYearChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+}

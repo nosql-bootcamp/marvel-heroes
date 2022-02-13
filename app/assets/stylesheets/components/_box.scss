@@ -1,0 +1,39 @@
+
+.titlebox{
+    font-family: $comics-typo;
+    font-size: 25px;
+    transform: rotate(1.4deg);
+    padding:20px;
+    background:#ddd;
+    border:1px solid #222;
+    box-shadow:3px 3px 0 #222;
+    cursor: pointer;
+  }
+
+  .box{
+    //min-height: 500px;
+    background:#fff;
+    border: solid black;
+    border-color: black;
+    .top-left {
+      letter-spacing: normal;
+    }
+  }
+
+  .content-box{
+    border-width: 3px 3px 5px 5px;
+  }
+
+  .card {
+    border: solid black !important;
+    border-color: black !important;
+    border-width: 3px 4px 3px 5px !important;
+    border-radius: 95% 4% 92% 5%/4% 95% 6% 95% !important;
+  }
+
+  .sheet {
+    border: solid black !important;
+    border-color: black !important;
+    border-width: 3px 4px 5px 5px !important;
+    border-radius: 95% 2% 162% 3%/9% 96% 2% 99% !important;
+  }

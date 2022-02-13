@@ -1,0 +1,49 @@
+
+.content {
+    .main-entries {
+        display: flex;
+        justify-content: space-around;
+        .titlebox {
+            width: 25%;
+            text-align: center;
+            color: #000;
+            text-decoration: none;
+        }
+    }
+    .main-tops-lasts {
+        margin-top: 80px;
+        display: flex;
+        justify-content: space-around;
+        .box {
+            width: 35%;
+            padding: 8px 16px;
+            position: relative;
+            overflow:hidden;
+            .text {
+                background-color:#fff;
+                border:solid #000;
+                border-width: 2px 3px 3px 1px;
+                margin:0;
+                padding:3px 21px;
+                font-family:'Comic Sans MS', cursive;
+            }
+              
+            .top-left {
+                left:-6px;
+                position:absolute;
+                top:-2px;
+                transform:skew(-15deg);
+            }
+        }
+        .card {
+            padding: 40px;
+        }
+        .tops {
+            background-image:radial-gradient(circle, yellow, orange);
+        }
+        .lasts {
+            //background-image:radial-gradient(circle, lightblue, deepskyblue);
+            background-image:radial-gradient(circle, lightcoral, tomato);
+        }
+    }
+}
