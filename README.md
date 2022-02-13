@@ -58,7 +58,7 @@ Environnement de développement conseillé :
 
 Dans un terminal, à la racine du projet, lancez la commande `sbt`, puis la commande `~run` dans l'invite de commandes sbt
 ```bash
-➜  marvel-heroes git:(master) ✗ sbt
+$ sbt
 [info] Loading settings for project global-plugins from idea.sbt,metals.sbt ...
 [info] Loading global plugins from /Users/guillaume/.sbt/1.0/plugins
 [info] Loading settings for project marvel-heroes-build from plugins.sbt ...
@@ -71,7 +71,7 @@ Dans un terminal, à la racine du projet, lancez la commande `sbt`, puis la comm
 
 ## Dataset
 
-Les données sont disponibles dans le dossier `scripts/all-heroes.csv` et proviennent de plusieurs sources de données : 
+Les données sont disponibles dans le fichier `scripts/all-heroes.csv` et proviennent de plusieurs sources de données : 
 * [API Marvel](https://developer.marvel.com/)
 * [SuperheroDB](https://www.superherodb.com/)
 
