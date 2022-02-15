@@ -51,7 +51,7 @@ public class RedisRepository {
         logger.info("Retrieved last heroes");
 
         return redisClient.connect().async().smembers("lastVisited").thenApply(strings -> {
-            return strings.stream().map(StatItem::fromJson).limit(5).collect(Collectors.toList());
+            return strings.stream().map(StatItem::fromJson).limit(count).collect(Collectors.toList());
         });
     }
 
@@ -65,7 +65,7 @@ public class RedisRepository {
                 top.add(new TopStatItem(StatItem.fromJson(s1), Long.parseLong(s2)));
             });
 
-            return top.stream().sorted(Comparator.comparing(o -> o.hits)).limit(5).collect(Collectors.toList());
+            return top.stream().sorted(Comparator.comparing(o -> o.hits)).limit(count).collect(Collectors.toList());
         });
     }
 }
