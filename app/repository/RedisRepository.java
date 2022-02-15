@@ -9,7 +9,9 @@ import utils.StatItemSamples;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
@@ -37,7 +39,7 @@ public class RedisRepository {
     }
 
     private CompletionStage<Boolean> incrHeroInTops(StatItem statItem) {
-        return redisClient.connect().async().incr(statItem.slug).thenApply(aLong -> true);
+        return redisClient.connect().async().hincrby("topHeroes", Json.stringify(Json.toJson(statItem)), 1).thenApply(aLong -> true);
     }
 
 
@@ -55,8 +57,15 @@ public class RedisRepository {
 
     public CompletionStage<List<TopStatItem>> topHeroesVisited(int count) {
         logger.info("Retrieved tops heroes");
-        // TODO
-        List<TopStatItem> tops = Arrays.asList(new TopStatItem(StatItemSamples.MsMarvel(), 8L), new TopStatItem(StatItemSamples.Starlord(), 6L), new TopStatItem(StatItemSamples.SpiderMan(), 5L), new TopStatItem(StatItemSamples.BlackPanther(), 5L), new TopStatItem(StatItemSamples.Thanos(), 4L));
-        return CompletableFuture.completedFuture(tops);
+
+        return redisClient.connect().async().hgetall("topHeroes").thenApply(s -> {
+            List<TopStatItem> top = new ArrayList<>();
+
+            s.forEach((s1, s2) -> {
+                top.add(new TopStatItem(StatItem.fromJson(s1), Long.parseLong(s2)));
+            });
+
+            return top.stream().sorted(Comparator.comparing(o -> o.hits)).limit(5).collect(Collectors.toList());
+        });
     }
 }
