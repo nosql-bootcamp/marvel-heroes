@@ -28,6 +28,18 @@ public class ElasticRepository {
 
 
     public CompletionStage<PaginatedResults<SearchedHero>> searchHeroes(String input, int size, int page) {
+//        String query = "" +
+//                "{\n" +
+//                " "query" : {\n" +
+//                "    "query_string" : {\n" +
+//                "      "query" : "" + input + "",\n" +
+//                "      "fields" : [\n" +
+//                "        "name"\n" +
+//                "      ]\n" +
+//                "    }\n" +
+//                "}\n" +
+//                "}";
+
         return CompletableFuture.completedFuture(new PaginatedResults<>(3, 1, 1, Arrays.asList(SearchedHeroSamples.IronMan(), SearchedHeroSamples.MsMarvel(), SearchedHeroSamples.SpiderMan())));
         // TODO
         // return wsClient.url(elasticConfiguration.uri + "...")

@@ -1,12 +1,16 @@
 const csv = require('csv-parser');
 const fs = require('fs');
-const { Readable } = require('stream');
 const {
-  Client
-} = require('@elastic/elasticsearch');
+  Readable
+} = require('stream');
+const { Client } = require('@elastic/elasticsearch');
 
 const ELASTIC_SEARCH_URI = 'http://localhost:9200';
 const INDEX_NAME = 'heroes';
+
+const heroesIndexName = 'heroes'
+
+// TODO
 
 async function run() {
   const client = new Client({
@@ -23,6 +27,13 @@ async function run() {
     index: INDEX_NAME,
     body: {
       // TODO configurer l'index https://www.elastic.co/guide/en/elasticsearch/reference/current/mapping.html
+      mappings: {
+        properties: {
+          name: {
+            "type": 'keyword'
+          }
+        }
+      }
     }
   });
 
@@ -31,21 +42,34 @@ async function run() {
   fs.createReadStream('./all-heroes.csv')
     .pipe(csv())
     .on('data', data => {
-      heroes.push(data);
-      // TODO créer l'objet call à partir de la ligne
+
+      const hero = {
+        id: data.id,
+        name: data.name,
+        description: data.description,
+        aliases: data.aliases,
+        identity: identity,
+        partners: partners
+      };
+
+      heroes.push(hero);
     })
     .on('end', async () => {
       // TODO insérer les données dans ES en utilisant l'API de bulk https://www.elastic.co/guide/en/elasticsearch/reference/7.x/docs-bulk.html
-      const client = new Client({ node: ELASTIC_SEARCH_URI })
+      const client = new Client({
+        node: ELASTIC_SEARCH_URI
+      })
 
       const result = await client.helpers.bulk({
         datasource: Readable.from(heroes),
-        onDocument (doc) {
+        onDocument(doc) {
           return {
-            index: { _index: INDEX_NAME }
+            index: {
+              _index: INDEX_NAME
+            }
           }
         }
-      })
+      });
 
       const {
         body: count
