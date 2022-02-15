@@ -50,12 +50,19 @@ public class ElasticRepository {
     }
 
     public CompletionStage<List<SearchedHero>> suggest(String input) {
-        return CompletableFuture.completedFuture(Arrays.asList(SearchedHeroSamples.IronMan(), SearchedHeroSamples.MsMarvel(), SearchedHeroSamples.SpiderMan()));
-        // TODO
-        // return wsClient.url(elasticConfiguration.uri + "...")
-        //         .post(Json.parse("{ ... }"))
-        //         .thenApply(response -> {
-        //             return ...
-        //         });
+         return wsClient.url(elasticConfiguration.uri + "/heroes/_search")
+                 .post(Json.parse("{\"suggest\":{\"hero-suggest\":{\"text\":\"" + input + "\",\"completion\":{\"field\":\"suggest\"}}}}"))
+                 .thenApply(response -> {
+                     JsonNode jsonNode = Json.parse(response.getBody());
+
+                     List<SearchedHero> heroes = new ArrayList<>();
+                     for (JsonNode node : jsonNode.get("suggest").get("hero-suggest")) {
+                         for (JsonNode option : node.get("options")) {
+                             heroes.add(SearchedHero.fromJson(option.get("_source")));
+                         }
+                     }
+
+                     return heroes;
+                 });
     }
 }

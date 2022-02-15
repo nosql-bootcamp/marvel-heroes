@@ -25,7 +25,8 @@ function formatData(data) {
         teams: getArrayOfString(data?.teams),
         powers: getArrayOfString(data?.powers),
         partners: getArrayOfString(data?.partners),
-        creators: getArrayOfString(data?.creators)
+        creators: getArrayOfString(data?.creators),
+        suggest: [ data.name, data.description, data.creators ]
     };
 }
 
@@ -42,11 +43,17 @@ async function run() {
         index: HEROES_INDEX_NAME,
         body : {
             // TODO configurer l'index https://www.elastic.co/guide/en/elasticsearch/reference/current/mapping.html
-            // mappings: {
-            //     properties: {
-            //         "location": { "type": "geo_point" }
-            //     }
-            // }
+            mappings: {
+                properties: {
+                    "suggest": {
+                        "type": "completion",
+                        "preserve_position_increments": false
+                    },
+                    "name": {
+                        "type": "keyword"
+                    }
+                }
+            }
         }
     });
 
