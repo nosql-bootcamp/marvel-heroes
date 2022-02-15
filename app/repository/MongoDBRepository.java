@@ -35,7 +35,7 @@ public class MongoDBRepository {
 
 
     public CompletionStage<Optional<Hero>> heroById(String heroId) {
-        String query = "{\"name\" : \"" + heroId + "\"}";
+        String query = "{\"id\" : \"" + heroId + "\"}";
         Document document = Document.parse(query);
         return ReactiveStreamsUtils.fromSinglePublisher(heroesCollection.find(document).first())
                 .thenApply(result -> Optional.ofNullable(result).map(Document::toJson).map(Hero::fromJson));
