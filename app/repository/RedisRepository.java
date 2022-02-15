@@ -4,6 +4,7 @@ import io.lettuce.core.RedisClient;
 import models.StatItem;
 import models.TopStatItem;
 import play.Logger;
+import play.libs.Json;
 import utils.StatItemSamples;
 
 import javax.inject.Inject;
@@ -12,6 +13,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
+import java.util.stream.Collectors;
 
 @Singleton
 public class RedisRepository {
@@ -35,21 +37,20 @@ public class RedisRepository {
     }
 
     private CompletionStage<Boolean> incrHeroInTops(StatItem statItem) {
-        // TODO
-        return CompletableFuture.completedFuture(true);
+        return redisClient.connect().async().incr(statItem.slug).thenApply(aLong -> true);
     }
 
 
     private CompletionStage<Long> addHeroAsLastVisited(StatItem statItem) {
-        // TODO
-        return CompletableFuture.completedFuture(1L);
+        return redisClient.connect().async().sadd("lastVisited", Json.stringify(Json.toJson(statItem)));
     }
 
     public CompletionStage<List<StatItem>> lastHeroesVisited(int count) {
         logger.info("Retrieved last heroes");
-        // TODO
-        List<StatItem> lastsHeroes = Arrays.asList(StatItemSamples.IronMan(), StatItemSamples.Thor(), StatItemSamples.CaptainAmerica(), StatItemSamples.BlackWidow(), StatItemSamples.MsMarvel());
-        return CompletableFuture.completedFuture(lastsHeroes);
+
+        return redisClient.connect().async().smembers("lastVisited").thenApply(strings -> {
+            return strings.stream().map(StatItem::fromJson).limit(5).collect(Collectors.toList());
+        });
     }
 
     public CompletionStage<List<TopStatItem>> topHeroesVisited(int count) {
