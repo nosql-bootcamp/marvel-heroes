@@ -31,10 +31,11 @@ public class MongoDBRepository {
     public CompletionStage<Optional<Hero>> heroById(String heroId) {
         //return HeroSamples.staticHero(heroId);
 
-        String query = "{name : /^"+ heroId.replace("-", " ") +"$/i }";
-        System.out.println("Query: "+ query);
+        //String query = "{name : /^"+ heroId.replace("-", " ") +"$/i }";
+        String query = "{id : "+ heroId +" }";
+        //System.out.println("Query: "+ query);
         Document document = Document.parse(query);
-        System.out.println("Document: "+ document);
+        //System.out.println("Document: "+ document);
         return ReactiveStreamsUtils.fromSinglePublisher(heroesCollection.find(document).first())
                  .thenApply(result -> Optional.ofNullable(result).map(Document::toJson).map(Hero::fromJson));
     }
