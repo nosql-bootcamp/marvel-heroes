@@ -7,6 +7,7 @@ import models.ItemCount;
 import models.YearAndUniverseStat;
 import org.bson.Document;
 import utils.HeroSamples;
+import utils.ReactiveStreamsUtils;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -28,12 +29,10 @@ public class MongoDBRepository {
 
 
     public CompletionStage<Optional<Hero>> heroById(String heroId) {
-        return HeroSamples.staticHero(heroId);
-        // TODO
-        // String query = "{}";
-        // Document document = Document.parse(query);
-        // return ReactiveStreamsUtils.fromSinglePublisher(heroesCollection.find(document).first())
-        //         .thenApply(result -> Optional.ofNullable(result).map(Document::toJson).map(Hero::fromJson));
+        String query = "{\"name\" : \"" + heroId + "\"}";
+        Document document = Document.parse(query);
+        return ReactiveStreamsUtils.fromSinglePublisher(heroesCollection.find(document).first())
+                .thenApply(result -> Optional.ofNullable(result).map(Document::toJson).map(Hero::fromJson));
     }
 
     public CompletionStage<List<YearAndUniverseStat>> countByYearAndUniverse() {
