@@ -69,19 +69,38 @@ public class MongoDBRepository {
 
 
     public CompletionStage<List<ItemCount>> topPowers(int top) {
-        return CompletableFuture.completedFuture(new ArrayList<>());
-        // TODO
-        // List<Document> pipeline = new ArrayList<>();
-        // return ReactiveStreamsUtils.fromMultiPublisher(heroesCollection.aggregate(pipeline))
-        //         .thenApply(documents -> {
-        //             return documents.stream()
-        //                     .map(Document::toJson)
-        //                     .map(Json::parse)
-        //                     .map(jsonNode -> {
-        //                         return new ItemCount(jsonNode.findPath("_id").asText(), jsonNode.findPath("count").asInt());
-        //                     })
-        //                     .collect(Collectors.toList());
-        //         });
+        List<Document> pipeline = new ArrayList<>();
+        /*
+        db.heroes.aggregate([
+            {$unwind: "$powers" },
+            {$group: { _id: "$powers",
+                       count: { $sum: 1 } }},
+            { $sort: {count: -1} },
+            { $limit: 5 }
+        ])
+        */
+        
+        Document unwind = Document.parse("{$unwind: \"$powers\" }");
+        Document group = Document.parse("{$group: { _id: \"$powers\",\n" +
+                                        "count: { $sum: 1 } }}");
+        Document sort = Document.parse("{ $sort: {count: -1} }");
+        Document limit = Document.parse("{ $limit: "+ top +"}");
+
+        //Add to pipeline
+        pipeline.add(unwind);
+        pipeline.add(group);
+        pipeline.add(sort);
+        pipeline.add(limit);
+        return ReactiveStreamsUtils.fromMultiPublisher(heroesCollection.aggregate(pipeline))
+                .thenApply(documents -> {
+                    return documents.stream()
+                            .map(Document::toJson)
+                            .map(Json::parse)
+                            .map(jsonNode -> {
+                                return new ItemCount(jsonNode.findPath("_id").asText(), jsonNode.findPath("count").asInt());
+                            })
+                            .collect(Collectors.toList());
+                });
     }
 
     public CompletionStage<List<ItemCount>> byUniverse() {

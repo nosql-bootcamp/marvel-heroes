@@ -47,7 +47,7 @@ const insertCalls = async function (db, callback) {
                     "hairColor": data.hairColor
                 },
                 "teams": data.teams.split(","),
-                "powers": data.powers.split(","),
+                "powers": "" == data.powers ? [] : data.powers.split(","),
                 "partners": data.partners.split(","),
                 "skills": {
                     "intelligence": data.intelligence,
