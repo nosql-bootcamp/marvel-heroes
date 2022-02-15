@@ -32,7 +32,7 @@ public class MongoDBRepository {
         //return HeroSamples.staticHero(heroId);
 
         //String query = "{name : /^"+ heroId.replace("-", " ") +"$/i }";
-        String query = "{id : "+ heroId +" }";
+        String query = "{id : \""+ heroId +"\" }";
         //System.out.println("Query: "+ query);
         Document document = Document.parse(query);
         //System.out.println("Document: "+ document);
