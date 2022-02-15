@@ -58,8 +58,17 @@ public class ElasticRepository {
     }
 
     public CompletionStage<List<SearchedHero>> suggest(String input) {
-         return CompletableFuture.completedFuture(Arrays.asList(SearchedHeroSamples.IronMan(), SearchedHeroSamples.MsMarvel(), SearchedHeroSamples.SpiderMan()));
-        //String jsonRequest = "{\"from\": " + from + ",\"size\": " + size + ",\"query\": {\"wildcard\": {\"name\": {\"value\": \"*" + input + "*\"}}}}";
+        String jsonRequest = "{\n" +
+                "  \"suggest\": {\n" +
+                "    \"my-suggest-1\" : {\n" +
+                "      \"text\" : \"" + input + "\",\n" +
+                "      \"term\" : {\n" +
+                "        \"field\" : \"name\"\n" +
+                "      }\n" +
+                "    }\n" +
+                "  }\n" +
+                "}";
+        return CompletableFuture.completedFuture(Arrays.asList(SearchedHeroSamples.IronMan(), SearchedHeroSamples.MsMarvel(), SearchedHeroSamples.SpiderMan()));
         /*return wsClient.url(elasticConfiguration.uri + "/heroes/_suggest")
                 .post(Json.parse(jsonRequest))
                 .thenApply(response -> {
