@@ -6,7 +6,9 @@ import models.Hero;
 import models.ItemCount;
 import models.YearAndUniverseStat;
 import org.bson.Document;
+import play.libs.Json;
 import utils.HeroSamples;
+import utils.ReactiveStreamsUtils;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -15,6 +17,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
+import java.util.stream.Collectors;
 
 @Singleton
 public class MongoDBRepository {
@@ -28,17 +31,15 @@ public class MongoDBRepository {
 
 
     public CompletionStage<Optional<Hero>> heroById(String heroId) {
-        return HeroSamples.staticHero(heroId);
-        // TODO
-        // String query = "{}";
-        // Document document = Document.parse(query);
-        // return ReactiveStreamsUtils.fromSinglePublisher(heroesCollection.find(document).first())
-        //         .thenApply(result -> Optional.ofNullable(result).map(Document::toJson).map(Hero::fromJson));
+        String query = "{ id: \"" + heroId + "\" }";
+        Document document = Document.parse(query);
+        return ReactiveStreamsUtils.fromSinglePublisher(heroesCollection.find(document).first())
+                .thenApply(result -> Optional.ofNullable(result).map(Document::toJson).map(Hero::fromJson));
     }
 
     public CompletionStage<List<YearAndUniverseStat>> countByYearAndUniverse() {
         return CompletableFuture.completedFuture(new ArrayList<>());
-        // TODO
+
         //List<Document> pipeline = new ArrayList<>();
         //return ReactiveStreamsUtils.fromMultiPublisher(heroesCollection.aggregate(pipeline))
         //        .thenApply(documents -> {
@@ -62,19 +63,23 @@ public class MongoDBRepository {
 
 
     public CompletionStage<List<ItemCount>> topPowers(int top) {
-        return CompletableFuture.completedFuture(new ArrayList<>());
-        // TODO
-        // List<Document> pipeline = new ArrayList<>();
-        // return ReactiveStreamsUtils.fromMultiPublisher(heroesCollection.aggregate(pipeline))
-        //         .thenApply(documents -> {
-        //             return documents.stream()
-        //                     .map(Document::toJson)
-        //                     .map(Json::parse)
-        //                     .map(jsonNode -> {
-        //                         return new ItemCount(jsonNode.findPath("_id").asText(), jsonNode.findPath("count").asInt());
-        //                     })
-        //                     .collect(Collectors.toList());
-        //         });
+        //return CompletableFuture.completedFuture(new ArrayList<>());
+
+         List<Document> pipeline = new ArrayList<>();
+         pipeline.add(Document.parse("{ $unwind: { path: \"$powers\"} } ")); // Unwind powers
+         pipeline.add(Document.parse("{ $group: { _id : \"$powers\", count: { $sum: 1} } }")); // Group by power
+         pipeline.add(Document.parse("{ $sort: { count : -1 } }")); // Sorting top powers
+         pipeline.add(Document.parse("{ $limit: " + top + " }")); // Top ones
+         return ReactiveStreamsUtils.fromMultiPublisher(heroesCollection.aggregate(pipeline))
+                 .thenApply(documents -> {
+                     return documents.stream()
+                             .map(Document::toJson)
+                             .map(Json::parse)
+                             .map(jsonNode -> {
+                                 return new ItemCount(jsonNode.findPath("_id").asText(), jsonNode.findPath("count").asInt());
+                             })
+                             .collect(Collectors.toList());
+                 });
     }
 
     public CompletionStage<List<ItemCount>> byUniverse() {
